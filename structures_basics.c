@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <math.h>
 
+#define MAX_DIMENSIONS 3
 
 /**
  * This program will calculate the distance between two objects (persons)
@@ -21,9 +22,11 @@
  * First version : we create each field for our objects manually 
  *      Our data is not structured and can get messy as the program grows
  * 
+ * Second version: Using structs
  * Struct data type in C:
- * - 
- * 
+ * - through the use of the struct keyword, C allows us to create structured data types
+ * - each structure is made up of "members" (independent variables)
+ * - we can think of members all the data components, packaged together -> struct
  */
 
 
@@ -47,35 +50,54 @@ int main() {
 
     printf("\n=== Structuring Data ===\n");
 
-    // Implementing the data in a raw manner
-    char elon_name[] = "Elon Musk";
-    bool elon_active = true;
-    int elon_dimensions = 3;
-    double elon_pos[] = {1, 2, 3};
 
-    char bill_name[] = "Bill Gates";
-    bool bill_active = true;
-    int bill_dimensions = 2;
-    double bill_pos[] = {3, 2, 1};
+     /* Struct declaration */
+    struct Person {
+        // members of the struct
+        char *name;
+        bool active;
+        int dimensions;
+        double pos[MAX_DIMENSIONS];    // flexible array member
+    };
+
+    /* Using a struct */
+    // 1. Declare a variable typed by the name of the declared struct
+    //.   Here elon and bill are both structs of type Person
+    struct Person elon, bill;
+
+    // 2. Access and set members from a struct (in write mode)
+    elon.name = "Elon Musk";
+    elon.active = true;
+    elon.dimensions = 3;
+    elon.pos[0] = 1;
+    elon.pos[1] = 2;
+    elon.pos[2] = 3;
+
+    bill.name = "Bill Gates";
+    bill.active = true;
+    bill.dimensions = 3;
+    bill.pos[0] = 3;
+    bill.pos[1] = 2;
+    bill.pos[2] = 1;
 
     // checking if we can calculate the distance between the two
     // i.e. if one of them is not active
-    if (!bill_active || !elon_active)
+    // access an individual member in read mode
+    if (!bill.active || !elon.active)
     {
-        printf("%s isn't active.\n", !bill_active ? bill_name : elon_name);
+        printf("%s isn't active.\n", !bill.active ? bill.name : elon.name);
         return EXIT_FAILURE;
     }
     
     // check if both belong to the same universe (2D, 3D...)
-    if (elon_dimensions != bill_dimensions)
+    if (elon.dimensions != bill.dimensions)
     {
-        printf("%s and %s are in different dimensions !\n", bill_name, elon_name);
+        printf("%s and %s are in different dimensions !\n", bill.name, elon.name);
         return EXIT_FAILURE;
     }
 
-    printf("Distance between %s and %s is: %.1f\n", elon_name, bill_name,
-                        calculate_distance(elon_dimensions, elon_pos, bill_pos));
-    
+    printf("Distance between %s and %s is: %.1f\n", elon.name, bill.name,
+                        calculate_distance(elon.dimensions, elon.pos, bill.pos));
 
     return EXIT_SUCCESS;
 }
