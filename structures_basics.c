@@ -35,6 +35,38 @@
 // we use variable length arrays to pass in the number of dimensions
 // this is useful here, because we can pass the number of elements for each array, using a parameter
 // and not a fixed value
+
+/* Struct declaration */
+// Standard way
+struct PersonStruct {
+    // members of the struct
+    char *name;
+    bool active;
+    int dimensions;
+    double pos[MAX_DIMENSIONS];    // flexible array member
+};
+
+/* Alternative: using typedef */
+// Defining a new type of structure called/aliased as "Person"
+// This kind of declaration is called an anonymous structure
+typedef struct {
+    char *name;
+    bool active;
+    int dimensions;
+    double pos[MAX_DIMENSIONS];  
+} PersonAnon;  // structure alias
+
+// A better way is by giving a "tag" to the structure
+// By giving it the same name as its alias at the end (good practise)
+// It's also good practise to name the tag and alias identically 
+typedef struct Person { // structure tag
+    char *name;
+    bool active;
+    int dimensions;
+    double pos[MAX_DIMENSIONS];   
+    struct Person *friend;      // we can define a member that is of the type of the structure itself
+} Person; // structure alias -> will alias the structure by its tag defined above
+
 double calculate_distance(int dimensions, double a[dimensions], double b[dimensions])
 {
     double square_distance = 0;
@@ -50,20 +82,10 @@ int main() {
 
     printf("\n=== Structuring Data ===\n");
 
-
-     /* Struct declaration */
-    struct Person {
-        // members of the struct
-        char *name;
-        bool active;
-        int dimensions;
-        double pos[MAX_DIMENSIONS];    // flexible array member
-    };
-
     /* Using a struct */
     // 1. Declare a variable typed by the name of the declared struct
     //.   Here elon and bill are both structs of type Person
-    struct Person elon, bill;
+    Person elon, bill;
 
     // 2. Access and set members from a struct (in write mode)
     elon.name = "Elon Musk";
