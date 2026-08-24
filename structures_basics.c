@@ -67,6 +67,14 @@ typedef struct Person { // structure tag
     struct Person *friend;      // we can define a member that is of the type of the structure itself
 } Person; // structure alias -> will alias the structure by its tag defined above
 
+// Nested structures
+// A structure can hold another one as member
+typedef struct Motorcycle {
+    char *model;
+    double speed;
+    Person owner;
+} Motorcycle;
+
 double calculate_distance(int dimensions, double a[dimensions], double b[dimensions])
 {
     double square_distance = 0;
@@ -86,6 +94,11 @@ int main() {
     // 1. Declare a variable typed by the name of the declared struct
     //.   Here elon and bill are both structs of type Person
     Person elon, bill;
+
+    Motorcycle moto;
+    moto.model = "honda";
+    moto.speed = 300;
+    moto.owner.name = "Captain";
 
     // 2. Access and set members from a struct (in write mode)
     elon.name = "Elon Musk";
